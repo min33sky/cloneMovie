@@ -2,17 +2,32 @@ import React from 'react';
 import { Col } from 'antd';
 import { Link } from 'react-router-dom';
 
-const GridCards = ({ image, movieId, movieName }) => {
+const GridCards = ({ landingPage, image, movieId, movieName, actorName }) => {
+  if (landingPage) {
+    return (
+      <Col lg={6} md={8} xs={24}>
+        <div style={{ position: 'relative' }}>
+          <Link to={`/movie/${movieId}`}>
+            <img
+              style={{ width: '100%', height: '420px' }}
+              src={image}
+              alt={movieName}
+            />
+          </Link>
+        </div>
+      </Col>
+    );
+  }
   return (
     <Col lg={6} md={8} xs={24}>
       <div style={{ position: 'relative' }}>
-        <Link to=''>
-          <img
-            style={{ width: '100%', height: '420px' }}
-            src={image}
-            alt={movieName}
-          />
-        </Link>
+        <img
+          style={{ width: '100%', height: '420px' }}
+          src={image}
+          alt={actorName}
+        />
+        <br />
+        <h2 style={{ textAlign: 'center' }}>{actorName}</h2>
       </div>
     </Col>
   );

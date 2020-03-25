@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { API_KEY } from '../../Secret';
 import { API_URL, IMAGE_BASE_URL } from '../../Config';
-import MainImage from './Sections/MainImage';
+import MainImage from '../Commons/MainImage';
 import { Row } from 'antd';
 import GridCards from '../Commons/GridCards';
 
@@ -15,6 +15,10 @@ function LandingPage() {
     window.addEventListener('scroll', handleScroll);
     const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko&page=1`;
     fetchMovies(endpoint);
+    return () => {
+      // ! 컴포넌트를 Unmount 하기전에 리스너를 제거해 준다.
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const fetchMovies = endpoint => {
@@ -52,11 +56,12 @@ function LandingPage() {
       body.scrollHeight,
       body.offsetHeight,
       html.clientHeight,
-      body.scrollHeight,
-      html.offsetHeight,
     );
 
     const windowBottom = windowHeight + window.pageYOffset;
+
+    // console.log('windowHeight ', windowHeight);
+    // console.log('windowBottom ', windowBottom);
 
     if (windowBottom >= docHeight - 1) {
       console.log('clicked');
@@ -85,6 +90,7 @@ function LandingPage() {
             {movies.map((movie, idx) => (
               <React.Fragment key={idx}>
                 <GridCards
+                  landingPage
                   image={
                     movie.poster_path
                       ? `${IMAGE_BASE_URL}w500${movie.poster_path}`
