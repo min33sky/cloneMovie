@@ -5,14 +5,16 @@ import MainImage from '../Commons/MainImage';
 import MovieInfo from './Section/MovieInfo';
 import { Row } from 'antd';
 import GridCards from '../Commons/GridCards';
+import Favorite from './Section/Favorite';
 
 const MovieDetailPage = ({ match }) => {
+  const movieId = match.params.movieId;
+  const userId = localStorage.getItem('userId');
   const [movieInfo, setMovieInfo] = useState('');
   const [castInfo, setCastInfo] = useState(null);
   const [actorToggle, setActorToggle] = useState(false);
 
   useEffect(() => {
-    const movieId = match.params.movieId;
     const endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}&language=ko`;
     const endpointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=ko`;
     // 캐스팅 정보
@@ -47,6 +49,10 @@ const MovieDetailPage = ({ match }) => {
       )}
       {/* BODY */}
       <div style={{ width: '85%', margin: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Favorite movieId={movieId} movieInfo={movieInfo} userId={userId} />
+        </div>
+
         {/* Movie Info */}
         <MovieInfo movie={movieInfo} />
         <br />

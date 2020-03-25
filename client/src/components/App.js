@@ -21,7 +21,7 @@ function App() {
           <Route
             exact
             path='/movie/:movieId'
-            component={Auth(MovieDetailPage, false)}
+            component={Auth(MovieDetailPage, null)}
           />
         </Switch>
       </div>
