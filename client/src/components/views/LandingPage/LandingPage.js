@@ -12,7 +12,9 @@ function LandingPage() {
   const buttonRef = useRef(null);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    // ! 버그 : 뒤로가기나 메인 페이지로 갈 때 스크롤바가 아래쪽을 가있으면
+    // ! 바로 다음 페이지를 로딩해서 첫 페이지 데이터가 삭제된다.
+    // window.addEventListener('scroll', handleScroll);
     const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko&page=1`;
     fetchMovies(endpoint);
     return () => {
@@ -26,11 +28,12 @@ function LandingPage() {
     fetch(endpoint)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
-        console.log(res.results[0]);
         setMovies([...movies, ...res.results]);
         setMainMovieImage(mainMovieImage || res.results[0]);
         setCurrentPage(res.page);
+        if (currentPage === 1) {
+          window.addEventListener('scroll', handleScroll); // ! 임시 해결법
+        }
       });
   };
 
@@ -64,8 +67,7 @@ function LandingPage() {
     // console.log('windowBottom ', windowBottom);
 
     if (windowBottom >= docHeight - 1) {
-      console.log('clicked');
-      buttonRef.current.click();
+      buttonRef.current && buttonRef.current.click();
     }
   };
 
